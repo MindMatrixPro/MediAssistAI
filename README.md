@@ -67,7 +67,7 @@ This empowers healthcare professionals to **save time, reduce uncertainty, and b
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/tiknaavenger/MediAssistAI.git
+   git clone https://github.com/MindMatrixPro/MediAssistAI.git
    cd MediAssistAI
    ```
 
