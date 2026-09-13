@@ -5,7 +5,7 @@ Step 2: Create a ChromaDB vector collection
 Step 3: Fetch full PubMed articles from PMIDs.
 Step 4 — Create embeddings for articles and store them in ChromaDB.
 Step 5: Query ChromaDB collection with biomedical embeddings. Uses the same PubMedBERT-based model for semantic similarity.
-Step 6 — RAG pipeline using ChromaDB for retrieval + Groq LLaMA 3 for generation.
+Step 6 — RAG pipeline using ChromaDB for retrieval + Groq (openai/gpt-oss-20b) for generation.
 """
 import json
 from pubmed import PubMedRetriever
@@ -219,7 +219,7 @@ def query_chromadb():
 
 def answer_query_with_rag_groq(question):
     """
-    Step 6 — RAG pipeline using ChromaDB for retrieval + Groq LLaMA 3 for generation.
+    Step 6 — RAG pipeline using ChromaDB for retrieval + Groq (openai/gpt-oss-20b) for generation.
     """
     # 1️⃣ Retrieve top documents from ChromaDB
     # 📦 Get or create the collection
@@ -276,9 +276,9 @@ Answer:
     # 📝 Display results
     print("\n\n\n\nprompt")
 
-    # 4️⃣ Generate response from Groq LLaMA 3
+    # 4️⃣ Generate response from Groq (openai/gpt-oss-20b)
     chat_completion = groq_client.chat.completions.create(
-        model=os.environ['GROQ_MODEL'],
+        model=os.environ.get('GROQ_MODEL', 'openai/gpt-oss-20b'),
         messages=[
             {"role": "system", "content": "You are a helpful and evidence-based medical assistant."},
             {"role": "user", "content": prompt}
@@ -288,7 +288,7 @@ Answer:
 
     # 5️⃣ Output answer
     final_answer = chat_completion.choices[0].message.content.strip()
-    print("\n=== Final Answer (Groq LLaMA 3) ===\n")
+    print("\n=== Final Answer (Groq openai/gpt-oss-20b) ===\n")
     print(final_answer)
     return final_answer
 

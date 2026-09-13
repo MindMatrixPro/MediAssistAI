@@ -141,7 +141,7 @@ st.markdown("""
 # ---------------------------
 st.markdown(f"""
 <h1 style='color:royalblue; margin-bottom:0; font-size:25px;'>Healthcare Research Assistant</h1>
-<p style='color:gray; margin-top:0; font-size:15px; margin-bottom:0;'>💊 Search PubMed, ingest selected articles to ChromaDB, and query via semantic search + optional Groq LLaMA-3</p>
+<p style='color:gray; margin-top:0; font-size:15px; margin-bottom:0;'>💊 Search PubMed, ingest selected articles to ChromaDB, and query via semantic search + optional Groq (openai/gpt-oss-20b)</p>
 """, unsafe_allow_html=True)
 st.markdown("<div style='margin-top:6px; margin-bottom:6px;'></div>", unsafe_allow_html=True)
 
@@ -228,7 +228,7 @@ def home_page():
                                     ChatCompletionUserMessageParam(role="user", content=user_prompt)
                                 ]
                                 chat_completion = groq_client.chat.completions.create(
-                                    model=os.environ['GROQ_MODEL'],
+                                    model=os.environ.get('GROQ_MODEL', 'openai/gpt-oss-20b'),
                                     messages=messages,
                                     temperature=0.0,
                                     max_tokens=1000

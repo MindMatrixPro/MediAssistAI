@@ -6,7 +6,7 @@
 <p align="center">
   <a href="https://streamlit.io/"><img alt="Streamlit" src="https://img.shields.io/badge/🖥️%20Streamlit-1.45.0-ff4b4b?logo=streamlit&logoColor=white"></a>
   <a href="https://huggingface.co/"><img alt="Hugging Face" src="https://img.shields.io/badge/🤗%20Hugging%20Face-Transformers-yellow?logo=huggingface&logoColor=white"></a>
-  <a href="https://groq.com/"><img alt="Groq" src="https://img.shields.io/badge/⚡%20Groq-LLaMA3-blue?logo=groq&logoColor=white"></a>
+  <a href="https://groq.com/"><img alt="Groq" src="https://img.shields.io/badge/⚡%20Groq-openai%2Fgpt--oss--20b-blue?logo=groq&logoColor=white"></a>
   <a href="https://python.org/"><img alt="Python" src="https://img.shields.io/badge/🐍%20Python-3.13.0-3776AB?logo=python&logoColor=white"></a>
   <a href="https://chromadb.com/"><img alt="ChromaDB" src="https://img.shields.io/badge/📚%20ChromaDB-1.0.16-blue?logo=chromadb&logoColor=white"></a>
   <a href="https://python.org/dev/peps/pep-0566/"><img alt="python-dotenv" src="https://img.shields.io/badge/🐍%20python--dotenv-1.1.0-3776AB?logo=python&logoColor=white"></a>
@@ -25,7 +25,7 @@ To solve this, we developed **MediAssist AI** — a **Retrieval-Augmented Genera
 1. **Fetches medical research** from *PubMed* using APIs.
 2. **Embeds & stores articles** in a vector database for fast semantic search.
 3. **Retrieves relevant evidence** for a query.
-4. **Generates clear, contextual answers** using the **Groq LLaMA 3 model**.
+4. **Generates clear, contextual answers** using the **Groq openai/gpt-oss-20b model**.
 
 This empowers healthcare professionals to **save time, reduce uncertainty, and base recommendations on the latest peer-reviewed research**.
 
@@ -39,7 +39,7 @@ This empowers healthcare professionals to **save time, reduce uncertainty, and b
 - **Vector Database with ChromaDB**:
   - Store embeddings for semantic similarity search.
   - Optimized for **biomedical text** with the **S-PubMedBert-MS-MARCO** model from Hugging Face.
-- **RAG Pipeline with Groq LLaMA 3**:
+- **RAG Pipeline with Groq openai/gpt-oss-20b**:
   - Retrieve the most relevant research context.
   - Generate evidence-based responses.
 - **Streamlit Web App**:
@@ -55,10 +55,10 @@ This empowers healthcare professionals to **save time, reduce uncertainty, and b
 ## 🚀 Launch App
 [https://mediassist-genai.streamlit.app/](https://mediassist-genai.streamlit.app/)
 
-![app](Project%20Screenshot%201.png)
+![app](assets/Project%20Screenshot%201.png)
 
 ---
-![app](Project%20Screenshot%202.png)
+![app](assets/Project%20Screenshot%202.png)
 
 ---
 
@@ -77,7 +77,14 @@ This empowers healthcare professionals to **save time, reduce uncertainty, and b
    pip install -r requirements.txt
    ```
 
-3. **Run the Streamlit App**
+3. **Configure Environment Variables**
+
+   ```bash
+   cp .env.example .env
+   # Open .env and insert your GROQ_API_KEY
+   ```
+
+4. **Run the Streamlit App**
 
    ```bash
    streamlit run main_app.py
