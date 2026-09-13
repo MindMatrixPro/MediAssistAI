@@ -87,8 +87,33 @@ This empowers healthcare professionals to **save time, reduce uncertainty, and b
 4. **Run the Streamlit App**
 
    ```bash
-   streamlit run main_app.py
+   streamlit run src/main_app.py
    ```
+
+---
+
+## 📁 Project Structure
+
+```text
+MediAssistAI/
+├── assets/                     # Application screenshots and visual assets
+│   ├── Project Screenshot 1.png
+│   └── Project Screenshot 2.png
+├── data/                       # Persistent database and processed datasets
+│   ├── chroma_data/            # ChromaDB vector store
+│   ├── articles.json           # PubMed articles dataset
+│   └── pmids.txt               # Ingested PubMed IDs list
+├── src/                        # Application source code
+│   ├── __init__.py             # Python package marker
+│   ├── main_app.py             # Streamlit application UI & interaction
+│   ├── pubmed.py               # PubMed API search and fetch utilities
+│   └── article_ingestion.py    # PubMed article embedding and RAG pipeline
+├── .env.example                # Environment variables template
+├── .gitignore                  # Git exclusion rules
+├── LICENSE                     # License file
+├── README.md                   # Project documentation
+└── requirements.txt            # Python dependencies
+```
 
 ## Contributing
 

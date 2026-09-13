@@ -8,25 +8,33 @@ Step 5: Query ChromaDB collection with biomedical embeddings. Uses the same PubM
 Step 6 — RAG pipeline using ChromaDB for retrieval + Groq (openai/gpt-oss-20b) for generation.
 """
 import json
-from pubmed import PubMedRetriever
+import os
+try:
+    from pubmed import PubMedRetriever
+except ImportError:
+    from src.pubmed import PubMedRetriever
 from sentence_transformers import SentenceTransformer
 import chromadb
-import os
 from groq import Groq
 from dotenv import load_dotenv
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+dotenv_path = os.path.join(BASE_DIR, ".env")
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+else:
+    load_dotenv()
 
 collection_name = "pubmed_if_articles"
 
 # Initialize Chroma client ONCE for the entire lifecycle
-client = chromadb.PersistentClient(path="./chroma_data")
+chroma_path = os.path.join(DATA_DIR, "chroma_data") if os.path.exists(os.path.join(DATA_DIR, "chroma_data")) else "./chroma_data"
+client = chromadb.PersistentClient(path=chroma_path)
 
 # 🧠 Initialize embedding model
 # model = SentenceTransformer("all-MiniLM-L6-v2")
 model = SentenceTransformer("pritamdeka/S-PubMedBert-MS-MARCO")
-
-
-# 🔹 Load environment variables from .env file
-load_dotenv()
 
 # 🔹 Initialize Groq client
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
@@ -48,10 +56,11 @@ def fetch_pmids():
     print(f"Retrieved {len(pmids)} PMIDs from PubMed.")
 
     # Optional: save PMIDs to file
-    with open("pmids.txt", "w", encoding="utf-8") as f:
+    pmids_path = os.path.join(DATA_DIR, "pmids.txt") if os.path.exists(DATA_DIR) else "pmids.txt"
+    with open(pmids_path, "w", encoding="utf-8") as f:
         for pmid in pmids:
             f.write(f"{pmid}\n")
-    print("PMIDs saved to pmids.txt")
+    print(f"PMIDs saved to {pmids_path}")
 
 
 def create_or_get_pmids_collection_in_chromadb():
@@ -76,8 +85,8 @@ def fetch_full_articles():
     Reads PMIDs from pmids.txt (Step 1 output).
     Saves detailed article data to articles.json.
     """
-    pmid_file = "pmids.txt"
-    output_file = "articles.json"
+    pmid_file = os.path.join(DATA_DIR, "pmids.txt") if os.path.exists(os.path.join(DATA_DIR, "pmids.txt")) else "pmids.txt"
+    output_file = os.path.join(DATA_DIR, "articles.json") if os.path.exists(DATA_DIR) else "articles.json"
 
     # 📚 Read PMIDs from file
     try:
@@ -109,7 +118,7 @@ def store_articles_embeddings_in_chromadb():
     Step 4 — Create embeddings for articles and store them in ChromaDB.
     Reads articles.json (from Step 3) and ingests into existing collection.
     """
-    articles_file = "articles.json"
+    articles_file = os.path.join(DATA_DIR, "articles.json") if os.path.exists(os.path.join(DATA_DIR, "articles.json")) else "articles.json"
 
     # 📚 Load articles
     try:

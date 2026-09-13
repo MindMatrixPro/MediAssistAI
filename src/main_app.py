@@ -13,7 +13,10 @@ import streamlit as st
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 import chromadb
-from pubmed import PubMedRetriever
+try:
+    from pubmed import PubMedRetriever
+except ImportError:
+    from src.pubmed import PubMedRetriever
 import html
 import tempfile
 
@@ -27,6 +30,16 @@ except Exception:
 os.environ["STREAMLIT_WATCHER_TYPE"] = "none"
 
 # ---------------------------
+# Project directories & .env
+# ---------------------------
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+dotenv_path = os.path.join(BASE_DIR, ".env")
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+else:
+    load_dotenv()
+
+# ---------------------------
 # Page config MUST come first
 # ---------------------------
 st.set_page_config(page_title="Healthcare Research Assistant", page_icon="🩺", layout="wide")
@@ -36,7 +49,8 @@ st.set_page_config(page_title="Healthcare Research Assistant", page_icon="🩺",
 # Configuration
 # ---------------------------
 COLLECTION_NAME = "pubmed_if_articles"
-CHROMA_DIR = "./chroma_data"
+DATA_DIR = os.path.join(BASE_DIR, "data")
+CHROMA_DIR = os.path.join(DATA_DIR, "chroma_data") if os.path.exists(os.path.join(DATA_DIR, "chroma_data")) else "./chroma_data"
 # CHROMA_DIR = os.path.join(tempfile.gettempdir(), "chroma_data")
 DEFAULT_MODEL = "pritamdeka/S-PubMedBert-MS-MARCO"
 SEARCH_DEFAULT = "intermittent fasting and diabetes"
